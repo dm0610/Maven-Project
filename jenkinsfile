@@ -17,11 +17,45 @@ stages{
                 }
             }
         }
+		
 		stage ('Deploy to Staging'){
             steps {
                 build job: 'deploy-to-test-server'
             }
         }
+		
+		stage ('Deploy to Production')
+			{
+				steps
+				{
+					timeout(time:5, unit: 'Days')
+					{
+						input message: 'Approve PRODUCTION Deployment??'				
+					}
+					
+					build job: 'deploy-to-prod-server'
+				
+				}
+			
+				post
+				{
+				
+					success
+					{
+						echo 'Code Deployed to Production'
+					}
+				
+				}
+				
+				
+				falure
+				{
+				
+					echo ' Deployment Failed '
+				
+				}
+			
+			}
 		
     }
 }
