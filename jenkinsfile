@@ -9,7 +9,7 @@ pipeline {
 				sh 'pwd'
 				sh 'mvn clean package'
 				sh "docker build . -t tomcatwebapp:${env.BUILD_ID}"
-			
+				sh 'docker run -d -p 9090:8080 tomcatwebapp:${env.BUILD_ID}'
 			}
 		
 		
